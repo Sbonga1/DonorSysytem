@@ -1,0 +1,122 @@
+﻿@model Donor_System.Models.BloodDonationScreening
+@{
+    ViewBag.Title = "LifestyleRiskAssessment";
+}
+
+
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Screening</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Screening </li>
+    </ul>
+
+</div>
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- banner bottom shape -->
+<!-- //w3l-inner-page-breadcrumb-->
+
+
+<div class="container py-lg-5 py-md-4 py-2">
+
+    <div class="w3ls-heading">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div class="row" style="padding-left:100px">
+      
+        @using (Html.BeginForm("LifestyleRiskAssessment", "Screening", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>LifestyleRisk Assessment</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div style="padding-left:15px">Recent Tattoo Or Piercing:</div>
+                    <div class="col-md-10">
+                        <select name="RecentTattooOrPiercing" id="recentTattooOrPiercing" class="form-control">
+                            <option value="" class="RecentTattooOrPiercing"></option>
+                            <option value="Yes" class="RecentTattooOrPiercing">Yes</option>
+                            <option value="No" class="RecentTattooOrPiercing">No</option>
+
+                        </select>
+                        @Html.ValidationMessageFor(model => model.RecentTattooOrPiercing, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="padding-left:15px">Are you Pregnant:</div>
+                    <div class="col-md-10">
+                        <select name="IsPregnant" id="isPregnant" class="form-control">
+                            <option value="" class="IsPregnant"></option>
+                            <option value="Yes" class="IsPregnant">Yes</option>
+                            <option value="No" class="IsPregnant">No</option>
+
+                        </select>
+                        @Html.ValidationMessageFor(model => model.IsPregnant, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="padding-left:15px">InfectiousDisease Exposure:</div>
+                    <div class="col-md-10">
+                        <select name="InfectiousDiseaseExposure" id="infectiousDiseaseExposure" class="form-control">
+                            <option value="" class="InfectiousDiseaseExposure"></option>
+                            <option value="Yes" class="InfectiousDiseaseExposure">Yes</option>
+                            <option value="No" class="InfectiousDiseaseExposure">No</option>
+
+                        </select>
+                        @Html.ValidationMessageFor(model => model.InfectiousDiseaseExposure, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="padding-left:15px">Malaria Risk Assessment:</div>
+                    <div class="col-md-10">
+                        <select name="MalariaRiskAssessment" id="malariaRiskAssessment" class="form-control">
+                            <option value="" class="MalariaRiskAssessment"></option>
+                            <option value="Yes" class="MalariaRiskAssessment">Yes</option>
+                            <option value="No" class="MalariaRiskAssessment">No</option>
+
+                        </select>
+                        @Html.ValidationMessageFor(model => model.MalariaRiskAssessment, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="padding-left:15px">Recent COVID19 Diagnosis Or Exposure:</div>
+                    <div class="col-md-10">
+                        <select name="RecentCOVID19DiagnosisOrExposure" id="recentCOVID19DiagnosisOrExposure" class="form-control">
+                            <option value="" class="RecentCOVID19DiagnosisOrExposure"></option>
+                            <option value="Yes" class="RecentCOVID19DiagnosisOrExposure">Yes</option>
+                            <option value="No" class="RecentCOVID19DiagnosisOrExposure">No</option>
+                        </select>
+                        @Html.ValidationMessageFor(model => model.RecentCOVID19DiagnosisOrExposure, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Next" class="btn btn-primary" style="width:300px" />
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>
+

@@ -1,0 +1,146 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
+using Donor_System.Models;
+
+namespace Donor_System.Controllers
+{
+    public class BloodRequestRecordsController : Controller
+    {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        // GET: BloodRequestRecords
+        public ActionResult Index()
+        {
+            return View(db.BloodRequestRecords.ToList());
+        }
+
+        // GET: BloodRequestRecords/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BloodRequestRecord bloodRequestRecord = db.BloodRequestRecords.Find(id);
+            if (bloodRequestRecord == null)
+            {
+                return HttpNotFound();
+            }
+            return View(bloodRequestRecord);
+        }
+
+        // GET: BloodRequestRecords/Create
+        public ActionResult Create(int id)
+        {
+            Session["drID"] = id.ToString();
+           
+            var request = db.BloodRequests.Find(id);
+            int drId = db.ExternalDrRegs.Where(x => x.Email == request.DoctorEmail).FirstOrDefault().Id;
+            BloodRequestRecord b = new BloodRequestRecord
+            {
+                BloodType = request.BloodType,
+                amtBloodRequested = double.Parse(request.AmtRequired),
+                RequestDate = DateTime.Now,
+                DonationLocation = request.DonationLocation
+
+            };
+            return View(b);
+        }
+
+        // POST: BloodRequestRecords/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,BloodType,amtBloodRequested,RequestDate,DonationLocation")] BloodRequestRecord bloodRequestRecord)
+        {
+            if (ModelState.IsValid)
+            {
+                string Id = Session["drID"] as string;
+                int id = int.Parse(Id);
+                var request = db.BloodRequests.Find(id);
+                request.Status = "Settled";
+                db.Entry(request).State = EntityState.Modified;
+                int drId = db.ExternalDrRegs.Where(x => x.Email == request.DoctorEmail).FirstOrDefault().Id;
+                bloodRequestRecord.DrId = drId;
+                db.BloodRequestRecords.Add(bloodRequestRecord);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(bloodRequestRecord);
+        }
+
+        // GET: BloodRequestRecords/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BloodRequestRecord bloodRequestRecord = db.BloodRequestRecords.Find(id);
+            if (bloodRequestRecord == null)
+            {
+                return HttpNotFound();
+            }
+            return View(bloodRequestRecord);
+        }
+
+        // POST: BloodRequestRecords/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,BloodType,DrId,amtBloodRequested,RequestDate,DonationLocation")] BloodRequestRecord bloodRequestRecord)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(bloodRequestRecord).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(bloodRequestRecord);
+        }
+
+        // GET: BloodRequestRecords/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BloodRequestRecord bloodRequestRecord = db.BloodRequestRecords.Find(id);
+            if (bloodRequestRecord == null)
+            {
+                return HttpNotFound();
+            }
+            return View(bloodRequestRecord);
+        }
+
+        // POST: BloodRequestRecords/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            BloodRequestRecord bloodRequestRecord = db.BloodRequestRecords.Find(id);
+            db.BloodRequestRecords.Remove(bloodRequestRecord);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+}

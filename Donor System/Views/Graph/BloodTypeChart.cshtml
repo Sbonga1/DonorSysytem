@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewBag.Title = "BloodTypeChart";
+}
+
+
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Analysis</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Analysis </li>
+    </ul>
+
+</div>
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- banner bottom shape -->
+<!-- //w3l-inner-page-breadcrumb-->
+
+
+<div class="container py-lg-5 py-md-4 py-2">
+
+    <div class="w3ls-heading">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <p>@Html.ActionLink("View by Week", "Index", "Graph")</p>
+    <div class="row" style="padding-left:100px">
+
+        <canvas id="myChart" width="400" height="200"></canvas>
+
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var labels = @Html.Raw(Json.Encode(ViewData["ChartLabels"]));
+    var availableData = @Html.Raw(Json.Encode(ViewData["AvailableData"]));
+    var donatedData = @Html.Raw(Json.Encode(ViewData["DonatedData"]));
+    var requestedData = @Html.Raw(Json.Encode(ViewData["RequestedData"]));
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var backgroundColors = labels.map(() => getRandomColor());
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Available Blood (in litres)',
+                    data: availableData,
+                    backgroundColor: backgroundColors,
+                    borderColor: backgroundColors,
+                    borderWidth: 1
+                },
+                {
+                    label: 'Blood Donated (in litres)',
+                    data: donatedData,
+                    backgroundColor: backgroundColors,
+                    borderColor: backgroundColors,
+                    borderWidth: 1
+                },
+                {
+                    label: 'Blood Requested (in litres)',
+                    data: requestedData,
+                    backgroundColor: backgroundColors,
+                    borderColor: backgroundColors,
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top', // Move the legend to the top
+                    labels: {
+                        generateLabels: function (chart) {
+                            var data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map(function (label, i) {
+                                    return {
+                                        text: label, // Use the label as the legend text
+                                        fillStyle: data.datasets[0].backgroundColor[i], // Use the background color of the first dataset
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Blood Availability, Donation, and Requests by Blood Type',
+                    fontSize: 16,
+                    padding: 20
+                }
+            }
+        }
+    });
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+</script>
+

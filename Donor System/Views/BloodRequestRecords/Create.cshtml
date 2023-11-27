@@ -1,0 +1,88 @@
+﻿@model Donor_System.Models.BloodRequestRecord
+
+@{
+    ViewBag.Title = "Create";
+}
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Issue Blood</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Issue Blood </li>
+    </ul>
+
+</div>
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- banner bottom shape -->
+<!-- //w3l-inner-page-breadcrumb-->
+
+
+<div class="container py-lg-5 py-md-4 py-2">
+
+    <div class="w3ls-heading">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div class="row" style="padding-left:100px">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Blood Request Record</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div style="padding-left:15px">BloodType:</div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BloodType, new { htmlAttributes = new { @class = "form-control", @style = "width:300px", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.BloodType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+         
+
+            <div class="form-group">
+                <div style="padding-left:15px">Amount of Blood Requested:</div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.amtBloodRequested, new { htmlAttributes = new { @class = "form-control", @style = "width:300px" } })
+                    @Html.ValidationMessageFor(model => model.amtBloodRequested, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div style="padding-left:15px">Request Date:</div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.RequestDate, new { htmlAttributes = new { @class = "form-control", @style = "width:300px" } })
+                    @Html.ValidationMessageFor(model => model.RequestDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div style="padding-left:15px">Donation Location:</div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DonationLocation, new { htmlAttributes = new { @class = "form-control", @style = "width:300px" } })
+                    @Html.ValidationMessageFor(model => model.DonationLocation, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-primary" style="width:300px" />
+                </div>
+            </div>
+        </div>
+        }
+
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

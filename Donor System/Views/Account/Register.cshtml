@@ -1,0 +1,125 @@
+﻿@using Donor_System.Models
+@model RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+<!--/breadcrumb-bg-->
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Register</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Register </li>
+    </ul>
+
+</div>
+<!--//breadcrumb-bg-->
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- banner bottom shape -->
+<!-- //w3l-inner-page-breadcrumb-->
+
+
+<div class="container py-lg-5 py-md-4 py-2">
+
+    <div class="w3ls-heading">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div class="row" style="padding-left:100px">
+
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <h4></h4>
+            <hr />
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <div class="row" style="padding-bottom:3px">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10" style="padding-left:30px">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row" style="padding-bottom:3px">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10" style="padding-left:30px">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row" style="padding-bottom:3px">
+                @Html.LabelFor(m => m.Surname, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10" style="padding-left:30px">
+                    @Html.TextBoxFor(m => m.Surname, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row" style="padding-bottom:3px">
+                @Html.LabelFor(m => m.Role, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10" style="padding-left:30px">
+
+                    @Html.DropDownListFor(m => m.Role,
+                   new SelectList(Enum.GetValues(typeof(RegRoleEnum))),
+                   "Select Role", new { @class = "form-control", @style = "width:300px", id = "roleDropdown" })
+                </div>
+            </div>
+            <div class="row" style="padding-bottom:3px" id="Credentials">
+                @Html.LabelFor(m => m.Credentials, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10" style="padding-left:30px">
+
+                    <input type="file" name="file" id="file" class="form-control"  />
+                </div>
+            </div>
+            <div class="row" style="padding-bottom:3px">
+                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10" style="padding-left:30px">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row" style="padding-bottom:3px">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10" style="padding-left:30px">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-md-2 col-md-10" style="padding-left:30px">
+                    <input type="submit" value="Register" class="btn btn-outline-dark" />
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+<script>
+    // Get references to the DropDownList and the control to hide
+    var roleDropdown = document.getElementById("roleDropdown");
+    var controlToHide = document.getElementById("Credentials");
+
+    // Add an event listener to the DropDownList
+    roleDropdown.addEventListener("change", function () {
+        // Check the selected index
+        if (roleDropdown.selectedIndex === 1) {
+            // Hide the control
+            controlToHide.style.display = "none";
+        } else {
+            // Show the control
+            controlToHide.style.display = ""; // You can use "block", "inline-block", or "none" as needed
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+
+

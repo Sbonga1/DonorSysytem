@@ -1,0 +1,183 @@
+﻿@model IEnumerable<Donor_System.Models.Center>
+@using Donor_System.Models
+@{
+
+    ApplicationDbContext db = new ApplicationDbContext();
+    ViewBag.Title = "Index";
+}
+<style>
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-right: -10px; /* Add a negative margin to offset margin-right on individual cards */
+    }
+
+    /* Style for individual card elements */
+    .team-wrap {
+        flex-basis: 250px; /* Set a fixed width for all cards */
+        margin-right: 40px; /* Add right margin to individual cards */
+        margin-bottom: 20px; /* Add bottom margin to individual cards */
+        box-sizing: border-box;
+    }
+        
+</style>
+
+
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Centers</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Centers </li>
+    </ul>
+
+</div>
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- banner bottom shape -->
+<!-- //w3l-inner-page-breadcrumb-->
+
+
+
+@if (User.IsInRole("Doctor"))
+{
+    <section class="w3l-team">
+        <div class="team py-5">
+            <div class="container py-lg-5 py-md-4">
+                <div class="title-content text-center">
+                    <h6 class="title-subhny text-center">Donation Centers</h6>
+                    <h3 class="title-w3l mb-sm-3 text-center">Our Donation Centers</h3>
+                </div>
+                <div class="card-container"  >
+                    @foreach (var item in Model)
+                    {
+                        <div class="row team-row">
+                            <div class="team-wrap" >
+
+                                <div>
+                                    <div class="team-info">
+                                        <div class="column position-relative img-circle" style="width:200px; height:150px">
+                                            <a href="#url"><img src="/@item.Picture" alt="item.Picture" class="img-fluid" /></a>
+                                        </div>
+                                        <div class="column-btm">
+                                            <h3 class="name-pos">
+                                                <a href="#">
+                                                    @item.Name
+                                                </a>
+                                            </h3>
+                                            <div>
+                                                @{
+                                                    string currenUser = User.Identity.Name;
+                                                    bool IsExist = db.Doctors.Where(x => x.Email == currenUser).Any();
+
+                                                }
+                                                @if (IsExist == false)
+                                                {
+                                                    <button class="btn btn-outline-primary" onclick="location.href='@Url.Action(actionName: "Create", controllerName: "Doctors", routeValues: new { center = item.Name })'">Create Profile</button>
+                                                }
+                                                
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+    </div>
+</div>
+        </div>
+    </section>
+}
+else
+{
+    <div class="container py-lg-5 py-md-4 py-2">
+
+        <div class="w3ls-heading">
+            <h3>@ViewBag.Title</h3>
+        </div>
+        <div class="row" style="padding-left:100px">
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.City)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Province)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ZipCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Picture)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.City)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Province)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ZipCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            <img src="/@item.Picture" width="100" height="80" class="img-responsive-room" alt="">
+                        </td>
+                        <td>
+
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+}
+
+

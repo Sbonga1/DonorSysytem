@@ -1,0 +1,301 @@
+﻿@model IEnumerable<Donor_System.Models.Appointment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<style>
+    /* Style for the modal overlay */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+        z-index: 2000; /* Ensure it's above other elements */
+    }
+
+    /* Style for the modal content */
+    .modal-content {
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        max-width: 50%; /* Adjust the maximum width as needed */
+        max-height: 80%; /* Adjust the maximum height as needed */
+        overflow-y: auto; /* Enable scrolling if the content overflows */
+    }
+
+    /* Style for the close button */
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    /* Add additional styles for your modal content, buttons, and other elements as needed */
+    /* Customize fonts, colors, margins, padding, etc. */
+
+    /* Style for buttons within the modal */
+    .modal-content button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    /* Style for modal headings and text */
+    .modal-content h2 {
+        text-align: center;
+    }
+
+    /* Style for images within the modal */
+    .modal-content img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+ </style>
+
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Appointments</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Appointments </li>
+    </ul>
+
+</div>
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- banner bottom shape -->
+<!-- //w3l-inner-page-breadcrumb-->
+
+
+<div class="container py-lg-5 py-md-4 py-2">
+
+    <div class="w3ls-heading">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div class="row" style="padding-left:100px">
+
+
+        <table class="table">
+            <div id="reasonModal" class="modal">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Enter Reason for Declining</h5>
+                        <span class="close" onclick="closeReasonModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="reasonInput" class="form-control" placeholder="Enter reason here">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="submitDecline()">Submit</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeReasonModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <tr>
+                @*<th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>*@
+                @*<th>
+                @Html.DisplayNameFor(model => model.Surname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.Center)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Start)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.End)
+                </th>
+                @*<th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.status)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+
+                <div class="modal details-modal" data-doctor-id="@item.Id">
+                    <div class="modal-content">
+                        <div class="modal-header-left">
+                            <span class="close">&times;</span>
+                            <h2 style="text-align:center">Donor Details</h2>
+                        </div>
+
+
+
+                        <div class="modal-body">
+                            <p><strong>Donor Name:</strong>  @item.Name</p>
+                            <p><strong>Donor Surname:</strong> @item.Surname</p>
+                            <p><strong>Donor Email:</strong> @item.Email</p>
+                            <p><strong>Phone no:</strong> @item.PhoneNumber</p>
+
+                        </div>
+                        <div class="modal-footer">
+                            @if (item.status == "Awaiting Approval")
+                            {
+
+                                <button class="btn btn-primary" onclick="location.href='@Url.Action(actionName: "AssignDoctor", controllerName: "Doctors", routeValues: new { appId = item.Id })'">Assign Doctor</button>
+                                @*<button class="btn btn-outline-primary" onclick="openDeclineModal('@item.Id', this)">Decline</button>*@
+
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+                <tr>
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Surname)
+        </td>*@
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Center)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Start)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.End)
+                    </td>
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.status)
+                    </td>
+                    <td style="white-space: nowrap;">
+                        <div>
+
+                            <button class="btn btn-outline-primary open-detailsModal-btn" data-doctor-id="@item.Id">Review</button>
+
+                            <a href="@Url.Action("Edit", new { id = item.Id })"><i class="fa fa-pencil"></i>Edit</a> | <a href="@Url.Action("Delete", new { id = item.Id })"><i class="fa fa-trash"></i>Delete</a>
+                        </div>
+                   
+                        
+                    
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+    
+
+   
+</div>
+<script>
+    // Get all the buttons with the class "open-modal-btn"
+    var buttons = document.querySelectorAll(".open-detailsModal-btn");
+
+    // Attach click event listeners to each button
+    buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            var doctorId = button.getAttribute("data-doctor-id");
+            var modal = document.querySelector(".details-modal[data-doctor-id='" + doctorId + "']");
+            modal.style.display = "block";
+        });
+    });
+
+    // Get all the close buttons with the class "close"
+    var closeButtons = document.querySelectorAll(".close");
+
+    // Attach click event listeners to each close button
+    closeButtons.forEach(function (closeButton) {
+        closeButton.addEventListener("click", function () {
+            var modal = closeButton.closest(".modal");
+            modal.style.display = "none";
+        });
+    });
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target.classList.contains("modal")) {
+            event.target.style.display = "none";
+        }
+    };
+
+</script>
+<script>
+
+    var declineId;
+
+    function openDeclineModal(Id, button) {
+        var modal = button.closest(".modal");
+        modal.style.display = "none"; // Close the modal
+        declineId = Id;
+        $('#reasonModal').modal('show');
+    }
+    function closeReasonModal() {
+        $('#reasonModal').hide();
+        window.location.href = window.location.href;
+    }
+
+    function submitDecline() {
+        var reason = $('#reasonInput').val();
+
+        // Perform AJAX request to submit the decline reason
+        $.ajax({
+            url: '@Url.Action("DeclineRequest", "Appountments")',
+            type: 'POST',
+            data: { id: declineId, reason: reason },
+            success: function (result) {
+                if (result.hasOwnProperty('message')) {
+                    // Handle success response
+                    alert(result.message); // Display a success message
+
+                    // Refresh the current page after success
+                    location.reload(); // or window.location.href = window.location.href;
+                } else if (result.hasOwnProperty('error')) {
+                    // Handle error response
+                    alert(result.error); // Display an error message
+                }
+            },
+            error: function (xhr, status, error) {
+                // Handle AJAX error
+                alert("An error occurred: " + error);
+            }
+        });
+
+        $('#reasonModal').modal('hide');
+    }
+</script>

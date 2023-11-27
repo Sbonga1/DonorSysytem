@@ -1,0 +1,294 @@
+﻿@model IEnumerable<Donor_System.Models.CenterTimeslotsViewModel>
+@using Donor_System.Models
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    ViewBag.Title = "Donation Centers";
+}
+<head>
+    <link rel="stylesheet" href="~/Content/TimeSlotTable.css">
+</head>
+
+<style>
+    /* Apply the strikethrough effect to the text */
+    .strikethrough-text {
+        text-decoration: line-through;
+    }
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-right: -10px; /* Add a negative margin to offset margin-right on individual cards */
+    }
+
+    /* Style for individual card elements */
+    .team-wrap {
+        flex-basis: 250px; /* Set a fixed width for all cards */
+        margin-right: 40px; /* Add right margin to individual cards */
+        margin-bottom: 20px; /* Add bottom margin to individual cards */
+        box-sizing: border-box;
+    }
+</style>
+
+<style>
+
+    /* Style for the modal overlay */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+        z-index: 1000; /* Ensure it's above other elements */
+    }
+
+    /* Style for the modal content */
+    .modal-content {
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        max-width: 50%; /* Adjust the maximum width as needed */
+        max-height: 80%; /* Adjust the maximum height as needed */
+        overflow-y: auto; /* Enable scrolling if the content overflows */
+    }
+
+    /* Style for the close button */
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    /* Add additional styles for your modal content, buttons, and other elements as needed */
+    /* Customize fonts, colors, margins, padding, etc. */
+
+    /* Style for buttons within the modal */
+    .modal-content button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    /* Style for modal headings and text */
+    .modal-content h2 {
+        text-align: center;
+    }
+
+    /* Style for images within the modal */
+    .modal-content img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+</style>
+
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Centers</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Centers </li>
+    </ul>
+
+</div>
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+
+<section class="w3l-team">
+    <div class="team py-5">
+        <div class="container py-lg-5 py-md-4">
+            <div class="title-content text-center">
+                <h6 class="title-subhny text-center">Donation Centers</h6>
+                <h3 class="title-w3l mb-sm-3 text-center">Our Donation Centers</h3>
+            </div>
+            <div class="card-container">
+                @foreach (var item in Model)
+                {
+                    <div class="modal doctor-modal" data-doctor-id="@item.Center.Id">
+                        <div class="modal-content">
+                            <div class="modal-header-left">
+                                <span class="close">&times;</span>
+                                <h2 style="text-align:center">Available Times</h2>
+                            </div>
+                            <div class="modal-body">
+
+                                @if (item.AvailableTime != null)
+                                {
+                                    foreach (var timeSlot in item.AvailableTime.AvailableTimeSlots)
+                                    {
+                                        if (timeSlot.IsAvailable)
+                                        {
+                                            <div>
+                                              
+                                                    <strong>@timeSlot.Day</strong>   &nbsp;@timeSlot.Date.ToShortDateString() &nbsp;@timeSlot.StartTime.ToShortTimeString() - @timeSlot.EndTime.ToShortTimeString() &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <button type="button" class="btn_apt space-right" onclick="location.href='@Url.Action(actionName: "Create", controllerName: "Appointments", routeValues: new { center = item.Center.Name, timeId = timeSlot.Id })'"> Book</button>
+                                               
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div>
+                                                <span class="strikethrough-text">
+                                                    <strong>@timeSlot.Day</strong>   &nbsp;@timeSlot.Date.ToShortDateString() &nbsp;@timeSlot.StartTime.ToShortTimeString() - @timeSlot.EndTime.ToShortTimeString() &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    
+                                                </span>
+                                            </div>
+                                        }
+
+
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="modal details-modal" data-doctor-id="@item.Center.Id">
+                        <div class="modal-content">
+                            <div class="modal-header-left">
+                                <span class="close">&times;</span>
+                                <h2 style="text-align:center">Center Details</h2>
+                            </div>
+                           
+
+                            <div class="modal-body">
+                                <p><strong>Address:</strong>  @item.Center.Address</p>
+                                <p><strong>City:</strong> @item.Center.City</p>
+                                <p><strong>Province:</strong> @item.Center.Province</p>
+                                <p><strong>ZipCode:</strong> @item.Center.ZipCode</p>
+                                <p><strong>Phone no:</strong> @item.Center.Phone</p>
+                                <p><strong>Email:</strong> @item.Center.Email</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row team-row">
+                        <div class="team-wrap">
+
+                            <div>
+                                <div class="team-info">
+                                    <div class="column position-relative img-circle" style="width:220px; height:150px">
+                                        <a href="#url"><img src="/@item.Center.Picture" alt="item.Picture" class="img-fluid" /></a>
+                                    </div>
+                                    <div class="column-btm">
+                                        <h3 class="name-pos">
+                                            <a href="#url">
+                                                @item.Center.Name
+                                            </a>
+                                        </h3>
+                                        <div style="padding-bottom:3px">
+                                            <button class="btn btn-outline-primary open-detailsModal-btn" data-doctor-id="@item.Center.Id">Details</button>
+                                        </div>
+                                        @{
+                                            string currentUser = User.Identity.Name;
+                                            bool IsExist = db.Appointments.Where(x => x.Email == currentUser && x.status != "Settled" && x.status != "Declined" && x.status != "Cancelled").Any();
+                                        }
+                                        @if (IsExist == false)
+                                        {
+                                            <div>
+                                                <button class="btn btn-primary open-modal-btn" data-doctor-id="@item.Center.Id" style="width:fit-content">Book appointment</button>
+                                            </div>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- end team member -->
+                }
+            </div>
+            </div>
+    </div>
+</section>
+
+
+<script>
+    // Get all the buttons with the class "open-modal-btn"
+    var buttons = document.querySelectorAll(".open-modal-btn");
+
+    // Attach click event listeners to each button
+    buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            var doctorId = button.getAttribute("data-doctor-id");
+            var modal = document.querySelector(".modal[data-doctor-id='" + doctorId + "']");
+            modal.style.display = "block";
+        });
+    });
+
+    // Get all the close buttons with the class "close"
+    var closeButtons = document.querySelectorAll(".close");
+
+    // Attach click event listeners to each close button
+    closeButtons.forEach(function (closeButton) {
+        closeButton.addEventListener("click", function () {
+            var modal = closeButton.closest(".modal");
+            modal.style.display = "none";
+        });
+    });
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target.classList.contains("modal")) {
+            event.target.style.display = "none";
+        }
+    };
+
+</script>
+
+<script>
+    // Get all the buttons with the class "open-modal-btn"
+    var buttons = document.querySelectorAll(".open-detailsModal-btn");
+
+    // Attach click event listeners to each button
+    buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            var doctorId = button.getAttribute("data-doctor-id");
+            var modal = document.querySelector(".details-modal[data-doctor-id='" + doctorId + "']");
+            modal.style.display = "block";
+        });
+    });
+
+    // Get all the close buttons with the class "close"
+    var closeButtons = document.querySelectorAll(".close");
+
+    // Attach click event listeners to each close button
+    closeButtons.forEach(function (closeButton) {
+        closeButton.addEventListener("click", function () {
+            var modal = closeButton.closest(".modal");
+            modal.style.display = "none";
+        });
+    });
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target.classList.contains("modal")) {
+            event.target.style.display = "none";
+        }
+    };
+
+</script>

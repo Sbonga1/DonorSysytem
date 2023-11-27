@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Donor_System.Models.BloodRequestRecord>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Blood Issue Records</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Blood Issue Records </li>
+    </ul>
+
+</div>
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+
+
+    <div class="team py-5">
+        <div class="container py-lg-5 py-md-4">
+            <div class="title-content text-center">
+                <h6 class="title-subhny text-center">Blood Issue Records</h6>
+                <h3 class="title-w3l mb-sm-3 text-center">Blood Issue Records</h3>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BloodType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DrId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.amtBloodRequested)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RequestDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DonationLocation)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BloodType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DrId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.amtBloodRequested)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RequestDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DonationLocation)
+                        </td>
+                        <td style="white-space: nowrap;">
+                            <div>
+
+                                
+
+                                <a href="@Url.Action("Edit", new { id = item.Id })"><i class="fa fa-pencil"></i>Edit</a> | <a href="@Url.Action("Delete", new { id = item.Id })"><i class="fa fa-trash"></i>Delete</a>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+   

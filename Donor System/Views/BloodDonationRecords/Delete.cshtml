@@ -1,0 +1,107 @@
+﻿@model Donor_System.Models.BloodDonationRecord
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Donation Records</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Donation Records </li>
+    </ul>
+
+</div>
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- banner bottom shape -->
+<!-- //w3l-inner-page-breadcrumb-->
+
+
+<div class="container py-lg-5 py-md-4 py-2">
+
+    <div class="w3ls-heading">
+        <h3>@ViewBag.Title</h3>
+    </div>
+
+    <h3>Are you sure you want to delete this?</h3>
+    <div>
+        <h4>BloodDonationRecord</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.DonorEmail)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DonorEmail)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IdNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IdNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DrId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DrId)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.amtBloodDonated)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.amtBloodDonated)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DonationDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DonationDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DonationLocation)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DonationLocation)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DonationFrequency)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DonationFrequency)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+</div>

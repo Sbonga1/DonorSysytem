@@ -1,0 +1,126 @@
+﻿@using Donor_System.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+<style>
+    /* Custom styles for the checkbox and label */
+    .custom-checkbox-input {
+        /* Hide the default checkbox */
+        display: none;
+    }
+
+    .custom-checkbox-label {
+        position: relative;
+        cursor: pointer;
+        padding-left: 25px; /* Adjust spacing as needed */
+    }
+
+        /* Custom checkbox design */
+        .custom-checkbox-label::before {
+            content: "";
+            display: inline-block;
+            width: 18px; /* Adjust size as needed */
+            height: 18px; /* Adjust size as needed */
+            border: 2px solid #000; /* Border for the checkbox */
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        /* Custom checkbox tick mark */
+        .custom-checkbox-label::after {
+            content: "\2713"; /* Checkmark character (tick mark) */
+            font-size: 14px; /* Adjust size as needed */
+            color: #000; /* Checkmark color */
+            position: absolute;
+            left: 2px;
+            top: -1px; /* Adjust positioning as needed */
+            display: none; /* Initially hidden */
+        }
+
+    /* Apply styles for the custom checkbox checked state */
+    .custom-checkbox-input:checked + .custom-checkbox-label::before {
+        border-color: #000; /* Border color when checked */
+    }
+
+    .custom-checkbox-input:checked + .custom-checkbox-label::after {
+        display: inline-block; /* Show checkmark (tick mark) when checked */
+    }
+</style>
+
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Login</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Login </li>
+    </ul>
+
+</div>
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- banner bottom shape -->
+<!-- //w3l-inner-page-breadcrumb-->
+
+
+<div class="container py-lg-5 py-md-4 py-2">
+
+    <div class="w3ls-heading">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div class="row" style="padding-left:100px">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <h4>Use a local account to log in.</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row" style="padding-bottom:3px">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10" style="padding-left:30px">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row" style="padding-bottom:3px">
+                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
+                <div class="col-md-10" style="padding-left:30px">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-md-2 col-md-10">
+                    <div class="form-check">
+                        <input class="custom-checkbox-input" type="checkbox" id="RememberMe" name="RememberMe" value="true">
+                        <label class="custom-checkbox-label" for="RememberMe">Remember me</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="offset-md-2 col-md-10" style="padding-left:30px">
+                    <input type="submit" value="Log in" class="btn btn-outline-dark" />
+                </div>
+            </div>
+            <p>
+                @Html.ActionLink("Register as a new user", "Register")
+            </p>
+
+            <p>
+                @Html.ActionLink("Forgot your password?", "ForgotPassword")
+            </p>
+        }
+
+    </div>
+</div>
+
+

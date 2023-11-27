@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<!--/w3l-banner-content-->
+<div class="banner-w3l-main">
+    <div class="w3l-banner-content">
+        <div class="container">
+            <div class="bannerhny-info text-center">
+                <h6 class="title-subhny mb-2">Donor</h6>
+                <h3 class="">Your Blood &ensp;&ensp; Saves Lives.</h3>
+               
+
+                @if (Request.IsAuthenticated)
+                {
+                    <a class="btn btn-style btn-white mt-sm-5 mt-4" href="#">
+                        @User.Identity.Name
+
+                    </a>
+
+                }
+                else
+                {
+                    <a class="btn btn-style btn-white mt-sm-5 mt-4" href="@Url.Action("Login", "Account")">
+                        Click Here to login
+                    </a>
+                }
+
+            </div>
+        </div>
+    </div>
+    <!-- home page block1 -->
+    <section class="home-services pt-lg-0">
+        <div class="container">
+            
+        </div>
+    </section>
+    <!-- //home page block1 -->
+</div>
+<!--//w3l-banner-content-->

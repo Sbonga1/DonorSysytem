@@ -1,0 +1,97 @@
+﻿@model Donor_System.Models.BloodDonationScreening
+@{
+    ViewBag.Title = "HealthAssessment";
+}
+
+<div class="breadcrumb-bg w3l-inner-page-breadcrumb py-5" style="height:50px ; ">
+
+    <h2 class="title pt-5">Screening</h2>
+    <ul class="breadcrumbs-custom-path mt-3 text-center" style="height:50px">
+        <li><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="active"><span class="fa fa-arrow-right mx-2" aria-hidden="true"></span> Screening </li>
+    </ul>
+
+</div>
+<!-- banner bottom shape -->
+<div class="position-relative">
+    <div class="shape overflow-hidden">
+        <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+        </svg>
+    </div>
+</div>
+<!-- banner bottom shape -->
+<!-- //w3l-inner-page-breadcrumb-->
+
+
+<div class="container py-lg-5 py-md-4 py-2">
+
+    <div class="w3ls-heading">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div class="row" style="padding-left:100px">
+        
+        @using (Html.BeginForm("HealthAssessment", "Screening", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>Health Assessment</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div style="padding-left:15px">Blood Pressure(mmHg):</div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.BloodPressure, new { htmlAttributes = new { @class = "form-control", @style = "width:300px" } })
+                        @Html.ValidationMessageFor(model => model.BloodPressure, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="padding-left:15px">Pulse Rate(bpm):</div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.PulseRate, new { htmlAttributes = new { @class = "form-control", @style = "width:300px" } })
+                        @Html.ValidationMessageFor(model => model.PulseRate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="padding-left:15px"> Hemoglobin Or Hematocrit(ctHb):</div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.HemoglobinOrHematocrit, new { htmlAttributes = new { @class = "form-control", @style = "width:300px" } })
+                        @Html.ValidationMessageFor(model => model.HemoglobinOrHematocrit, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="padding-left:15px">Weight(kg):</div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control", @style = "width:300px" } })
+                        @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div style="padding-left:15px"> Height(m):</div>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Height, new { htmlAttributes = new { @class = "form-control", @style = "width:300px" } })
+                        @Html.ValidationMessageFor(model => model.Height, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Next" class="btn btn-primary" style="width:300px" />
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</div>
+
